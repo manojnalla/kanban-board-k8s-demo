@@ -8,7 +8,7 @@ image:
   repository: 386906331058.dkr.ecr.ca-central-1.amazonaws.com/manoj-assignment-ecr
   pullPolicy: Always 
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "kanban-backed"
+  tag: "kanban-backend"
 
 imagePullSecrets: []
 nameOverride: ""

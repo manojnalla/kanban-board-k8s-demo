@@ -151,3 +151,42 @@ NOTES:
   echo "Visit http://127.0.0.1:8080 to use your application"
   kubectl --namespace default port-forward $POD_NAME 8080:$CONTAINER_PORT
 ```
+
+*******************************************************************************************************
+
+## **Phase 4: Verfication and Troubleshooting**
+
+1. Check if POD is deployed and running successfully
+
+```
+[root@ip-172-31-25-138 example_env]# k get pods -n default
+NAME                              READY   STATUS             RESTARTS   AGE
+kanban-backend-784d5f8658-59gcf   0/1     Running            0          8s
+kanban-ui-6cb669995d-8dklk        0/1     CrashLoopBackOff   9          24m
+```
+
+2. Checking the logs of backend application
+
+```
+[root@ip-172-31-25-138 example_env]# k logs -f  kanban-backend-784d5f8658-59gcf -n default
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.1.6.RELEASE)
+
+2021-08-01 12:37:18.719  INFO 1 --- [           main] c.w.medium.kanban.KanbanApplication      : Starting KanbanApplication v0.0.1-SNAPSHOT on kanban-backend-784d5f8658-59gcf with PID 1 (/app.jar started by root in /)
+2021-08-01 12:37:18.724  INFO 1 --- [           main] c.w.medium.kanban.KanbanApplication      : No active profile set, falling back to default profiles: default
+2021-08-01 12:37:20.862  INFO 1 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2021-08-01 12:37:20.971  INFO 1 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 96ms. Found 2 repository interfaces.
+```
+
+3. As its not able to connect to database that could be an issue
+
+4. Kanban-ui seems to be down and log analysis says nginx conf issue
+(This is documented in KNOWNISSUES.md)
+
+
