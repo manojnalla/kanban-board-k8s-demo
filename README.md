@@ -47,3 +47,53 @@ nginx            1.17.1-alpine      ea1193fd3dde   2 years ago          20.6MB
 openjdk          8-alpine           a3562aa0b991   2 years ago          105MB
 ```
 
+***************************************************************************************************
+
+## **Phase 3: Creating the repository and push images**
+
+1. Created the AWS ECR repository using command below
+```
+aws ecr create-repository \
+> --repository-name manoj-assignment-ecr \
+> --image-scanning-configuration scanOnPush=true \
+> --region ca-central-1
+{
+    "repository": {
+        "repositoryUri": "386906331058.dkr.ecr.ca-central-1.amazonaws.com/manoj-assignment-ecr",
+        "imageScanningConfiguration": {
+            "scanOnPush": true
+        },
+        "encryptionConfiguration": {
+            "encryptionType": "AES256"
+        },
+        "registryId": "386906331058",
+        "imageTagMutability": "MUTABLE",
+        "repositoryArn": "arn:aws:ecr:ca-central-1:386906331058:repository/manoj-assignment-ecr",
+        "repositoryName": "manoj-assignment-ecr",
+        "createdAt": 1627810541.0
+    }
+}
+```
+
+2. Tag the image and push it to the repo
+```
+docker tag kanban-backend:latest 386906331058.dkr.ecr.ca-central-1.amazonaws.com/manoj-assignment-ecr:latest
+```
+
+3. Pushing both the images to repo
+
+```
+docker tag kanban-ui:latest 386906331058.dkr.ecr.ca-central-1.amazonaws.com/manoj-assignment-ecr:kanban-ui
+[root@ip-172-31-25-138 kanban-ui]# docker push 386906331058.dkr.ecr.ca-central-1.amazonaws.com/manoj-assignment-ecr:kanban-ui
+The push refers to repository [386906331058.dkr.ecr.ca-central-1.amazonaws.com/manoj-assignment-ecr]
+35e1638de2bd: Pushed
+465cdbf75da4: Pushed
+fbe0fc9bcf95: Layer already exists
+f1b5933fe4b5: Layer already exists
+
+
+kanban-ui: digest: sha256:e67670dd84275700c315dd82eb69b66f463b2f9fff920dc83149c3e19e180a7a size: 1157
+[root@ip-172-31-25-138 kanban-ui]# docker tag kanban-backend:latest 386906331058.dkr.ecr.ca-central-1.amazonaws.com/manoj-assignment-ecr:kanban-backend
+[root@ip-172-31-25-138 kanban-ui]# docker push 386906331058.dkr.ecr.ca-central-1.amazonaws.com/manoj-assignment-ecr:kanban-backend
+The push refers to repository [386906331058.dkr.ecr.ca-central-1.amazonaws.com/manoj-assignment-ecr]
+```
