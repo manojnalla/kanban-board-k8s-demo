@@ -210,12 +210,20 @@ nginx: [emerg] host not found in upstream "kanban-app" in /etc/nginx/conf.d/defa
     "StackId": "arn:aws:cloudformation:ca-central-1:386906331058:stack/postgresrds/4a03c2b0-f2cd-11eb-ada3-0e75e71712c2"
 }
 ```
-2. CloudFormation template is also created and uploaded in solution repo, below command was triggered
 
-```
- aws cloudformation create-stack --stack-name postgresrds --template-body file://cfnpostgresrds.yaml
-{
-    "StackId": "arn:aws:cloudformation:ca-central-1:386906331058:stack/postgresrds/4a03c2b0-f2cd-11eb-ada3-0e75e71712c2"
-}
-```
+*******************************************************************************************************
 
+## **Phase 6 : Bonus tasks**
+
+1. Accessing the application outside cluster
+Solution: We need to export service and can use either Ingress or LoadBalancer
+
+2. Secrets Management Solution
+Solution: We can use secrets in Kubernetes and mount that as volumes in containers. Also, we can consider to use AWS Secrets Manager, where in secrets will be retrieved
+at run time by application dynamically through API
+
+3. From end UI security
+Solution: Modified the node version from 12.7 to 16.6 (Dockerfile is updated)
+
+4. kanban-app size reduction
+Solution: Use maven-alpine image which is considerably less in size 
