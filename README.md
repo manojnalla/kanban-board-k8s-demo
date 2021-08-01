@@ -1,8 +1,8 @@
-#Solution to the assignment problem
+# Solution to the assignment problem
 
 *******************************************************************************************
 
-##**Phase 1: Creating basic infrastructure**
+## **Phase 1: Creating basic infrastructure**
 
 1. Created Amazon EKS cluster for deployment testing and automation
 
@@ -27,7 +27,7 @@ ip-172-31-37-92.ca-central-1.compute.internal    Ready    <none>   13m   v1.20.4
 ************************************************************************************************
 
 
-##**Phase 2: Creating the basic image**
+## **Phase 2: Creating the basic image**
 
 1. docker build -t docker-ui .
 
