@@ -182,11 +182,40 @@ kanban-ui-6cb669995d-8dklk        0/1     CrashLoopBackOff   9          24m
 2021-08-01 12:37:18.724  INFO 1 --- [           main] c.w.medium.kanban.KanbanApplication      : No active profile set, falling back to default profiles: default
 2021-08-01 12:37:20.862  INFO 1 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
 2021-08-01 12:37:20.971  INFO 1 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 96ms. Found 2 repository interfaces.
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'liquibase' defined in class path resource [org/springframework/boot/autoconfigure/liquibase/LiquibaseAutoConfiguration$LiquibaseConfiguration.class]: Invocation of init method failed; nested exception is liquibase.exception.DatabaseException: org.postgresql.util.PSQLException: The connection attempt failed.
+        at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1778) ~[spring-beans-5.1.8.RELEASE.jar!/:5.1.8.RELEASE]
+
 ```
 
 3. As its not able to connect to database that could be an issue
 
 4. Kanban-ui seems to be down and log analysis says nginx conf issue
 (This is documented in KNOWNISSUES.md)
+```
+2021/08/01 13:02:45 [emerg] 1#1: host not found in upstream "kanban-app" in /etc/nginx/conf.d/default.conf:8
+nginx: [emerg] host not found in upstream "kanban-app" in /etc/nginx/conf.d/default.conf:8
+```
 
+*******************************************************************************************************
+
+## **Phase 5 : PostgresDB solution**
+
+1. Have created a CloudFormation template for RDS DB Instance which will create te RDS and provide the endpoint
+
+2. CloudFormation template is also created and uploaded in solution repo, below command was triggered
+
+```
+ aws cloudformation create-stack --stack-name postgresrds --template-body file://cfnpostgresrds.yaml
+{
+    "StackId": "arn:aws:cloudformation:ca-central-1:386906331058:stack/postgresrds/4a03c2b0-f2cd-11eb-ada3-0e75e71712c2"
+}
+```
+2. CloudFormation template is also created and uploaded in solution repo, below command was triggered
+
+```
+ aws cloudformation create-stack --stack-name postgresrds --template-body file://cfnpostgresrds.yaml
+{
+    "StackId": "arn:aws:cloudformation:ca-central-1:386906331058:stack/postgresrds/4a03c2b0-f2cd-11eb-ada3-0e75e71712c2"
+}
+```
 
