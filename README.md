@@ -49,7 +49,7 @@ openjdk          8-alpine           a3562aa0b991   2 years ago          105MB
 
 ***************************************************************************************************
 
-## **Phase 3: Creating the repository and push images**
+## **Phase 3: Creating the repository and push images, create helm charts**
 
 1. Created the AWS ECR repository using command below
 ```
@@ -96,4 +96,58 @@ kanban-ui: digest: sha256:e67670dd84275700c315dd82eb69b66f463b2f9fff920dc83149c3
 [root@ip-172-31-25-138 kanban-ui]# docker tag kanban-backend:latest 386906331058.dkr.ecr.ca-central-1.amazonaws.com/manoj-assignment-ecr:kanban-backend
 [root@ip-172-31-25-138 kanban-ui]# docker push 386906331058.dkr.ecr.ca-central-1.amazonaws.com/manoj-assignment-ecr:kanban-backend
 The push refers to repository [386906331058.dkr.ecr.ca-central-1.amazonaws.com/manoj-assignment-ecr]
+```
+
+4. Creating the Helm chart templates for both Kanban-UI and Kanban-Backend
+
+```
+ helm create kanban-ui
+WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /root/.kube/config
+WARNING: Kubernetes configuration file is world-readable. This is insecure. Location: /root/.kube/config
+Creating kanban-ui
+
+
+ helm create kanban-backend
+WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /root/.kube/config
+WARNING: Kubernetes configuration file is world-readable. This is insecure. Location: /root/.kube/config
+Creating kanban-backend
+```
+
+5. Modify the values.yaml and Chart.yaml for the Imagepath, Pull Policy, and tag
+(Templates are uploaded under example_env folder)
+
+6. Installation of helm charts on EKS cluster
+
+```
+ helm install kanban-ui kanban-ui/ --values kanban-ui/values.yaml
+WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /root/.kube/config
+WARNING: Kubernetes configuration file is world-readable. This is insecure. Location: /root/.kube/config
+NAME: kanban-ui
+LAST DEPLOYED: Sun Aug  1 12:10:49 2021
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+NOTES:
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=kanban-ui,app.kubernetes.io/instance=kanban-ui" -o jsonpath="{.items[0].metadata.name}")
+  export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+  echo "Visit http://127.0.0.1:8080 to use your application"
+  kubectl --namespace default port-forward $POD_NAME 8080:$CONTAINER_PORT
+```
+
+```
+helm install kanban-backend kanban-backend/ --values kanban-backend/values.yaml
+WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /root/.kube/config
+WARNING: Kubernetes configuration file is world-readable. This is insecure. Location: /root/.kube/config
+NAME: kanban-backend
+LAST DEPLOYED: Sun Aug  1 12:14:41 2021
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+NOTES:
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=kanban-backend,app.kubernetes.io/instance=kanban-backend" -o jsonpath="{.items[0].metadata.name}")
+  export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+  echo "Visit http://127.0.0.1:8080 to use your application"
+  kubectl --namespace default port-forward $POD_NAME 8080:$CONTAINER_PORT
 ```
